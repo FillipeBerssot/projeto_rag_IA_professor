@@ -1,0 +1,34 @@
+# Python / ambiente
+.venv/
+__pycache__/
+*.pyc
+
+# Ignora tudo em data/
+data/**
+
+# ...mas permite a pasta do índice e os 3 artefatos necessários
+!data/.gitkeep
+!data/index/
+!data/index/faiss.index
+!data/index/texts.json
+!data/index/metas.json
+!data/index/.gitkeep
+
+# Cache e artefatos
+.cache/
+huggingface/
+~/.cache/
+**/.ipynb_checkpoints
+*.faiss
+*.index
+
+# Streamlit
+.streamlit/
+
+# OS/editor
+.DS_Store
+*.swp
+*.swo
+
+# Dotenv
+.env
