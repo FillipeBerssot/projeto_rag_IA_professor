@@ -1,6 +1,6 @@
 # Jarbas RAG (Projeto de Estudo Pessoal)
 
-> **Aviso honesto**  
+> **Aviso**  
 > Este repositório é um **projeto de estudo** feito para praticar RAG (Retrieval-Augmented Generation), Python e Streamlit.  
 > **Não** é um produto, não tem garantias de estabilidade e **pode falhar** (por exemplo, com mensagens como `Killed` em máquinas com pouca memória).  
 > O objetivo é **aprender**: desmontar, testar, quebrar, consertar e entender cada peça do pipeline.
