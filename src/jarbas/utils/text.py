@@ -43,8 +43,8 @@ def clean_text(s: str) -> str:
     return s
 
 def chunk_text(text: str, 
-               max_chars: int = 1200, 
-               overlap: int = 150
+               max_chars: int = 1600, 
+               overlap: int = 100
     ) -> List[str]:
     """
     Divide um texto longo em *chunks* por parágrafos, com sobreposição opcional.
