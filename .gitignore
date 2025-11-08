@@ -9,9 +9,6 @@ data/**
 # ...mas permite a pasta do índice e os 3 artefatos necessários
 !data/.gitkeep
 !data/index/
-!data/index/faiss.index
-!data/index/texts.json
-!data/index/metas.json
 !data/index/.gitkeep
 
 # Cache e artefatos
@@ -21,6 +18,11 @@ huggingface/
 **/.ipynb_checkpoints
 *.faiss
 *.index
+
+# Exeções que devem subir
+!data/index/faiss.index
+!data/index/texts.json
+!data/index/metas.json
 
 # Streamlit
 .streamlit/
