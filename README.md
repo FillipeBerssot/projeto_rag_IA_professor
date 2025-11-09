@@ -31,7 +31,7 @@ license: mit
 > Este repositório é um **projeto de estudo** feito para praticar RAG (Retrieval-Augmented Generation), Python e Streamlit.  
 > **Não** é um produto, não tem garantias de estabilidade e **pode falhar** (por exemplo, com mensagens como `Killed` em máquinas com pouca memória).  
 > O objetivo é **aprender**: desmontar, testar, quebrar, consertar e entender cada peça do pipeline.
-> Você pode gerar respostas **com OpenAI** (janela grande e mais qualidade) **ou 100% local** (modelo leve Qwen 1.5B), sempre **nos seus próprios dados** indexados com FAISS.
+> Você pode gerar respostas **com OpenAI** (janela grande e mais qualidade) **ou 100% local** (modelo leve Qwen2.5 - 0.5B), sempre **nos seus próprios dados** indexados com FAISS.
 
 ---
 
@@ -116,7 +116,7 @@ Se você escolher **Local**, tudo roda no seu computador, sem internet, mas a IA
 │     │  ├─ embed_index.py     # 2) cria embeddings e índice FAISS (→ index/)
 │     │  └─ audit_corpus.py    # (opcional) inspeciona corpus/chunks
 │     ├─ rag/
-│     │  ├─ local_backend.py   # backend RAG LOCAL (Qwen 2.5 1.5B)
+│     │  ├─ local_backend.py   # backend RAG LOCAL (Qwen2.5 - 0.5B)
 │     │  └─ openai_backend.py  # backend RAG com OpenAI (gpt-4o-mini)
 │     └─ utils/
 │        └─ text.py            # utilitários p/ limpeza/particionamento de texto
@@ -132,7 +132,7 @@ Se você escolher **Local**, tudo roda no seu computador, sem internet, mas a IA
 
 ## Modelos de Geração: OpenAI vs Local
 
-| Aspecto             | OpenAI (gpt-4o-mini)                      | Local (Qwen 1.5B)                              |
+| Aspecto             | OpenAI (gpt-4o-mini)                      | Local (Qwen2.5 - 0.5B)                              |
 |---------------------|-------------------------------------------|-----------------------------------------------|
 | Qualidade           | Alta/estável                               | Básica (modelo pequeno)                        |
 | Janela de contexto  | Grande                                     | Menor (≈ 2k tokens)                            |
@@ -203,7 +203,7 @@ Escreva sua pergunta e envie.
 
 ### Geração (duas formas)
 - **Local (`src/jarbas/rag/local_backend.py`)**  
-  Usa `Qwen/Qwen2.5-1.5B-Instruct` (via `transformers`/`pipeline` com `text-generation`).  
+  Usa `Qwen/Qwen2.5-0.5B-Instruct` (via `transformers`/`pipeline` com `text-generation`).  
   Como é um **modelo pequeno**, há **limites rígidos** de tamanho do prompt/saída. O código **trunca** pergunta/contexto quando necessário e cita as **Referências** ao final.
 
 - **OpenAI (`src/jarbas/rag/openai_backend.py`)**  
@@ -221,7 +221,7 @@ Escreva sua pergunta e envie.
 
 ## ⚙️ Parâmetros e decisões de segurança
 
-- **Local (Qwen 1.5B)**: parâmetros **travados** na UI para evitar `Killed`/OOM.
+- **Local (Qwen2.5 - 0.5B)**: parâmetros **travados** na UI para evitar `Killed`/OOM.
   - `top_k = 4`, `temperature = 0.2`, `max_output_tokens ~320` (e o backend ainda ajusta dinamicamente).
 - **OpenAI**: `top_k` configurável com **limite superior** (clamp) para evitar prompts gigantes.  
   Mesmo com janelas grandes, **muito contexto** pode degradar a qualidade e aumentar custo/latência.
@@ -242,7 +242,7 @@ Escreva sua pergunta e envie.
 
 1. **Escolha do motor**
    - **OpenAI (gpt-4o-mini)** — exige **API key** (`sk-...`), pode ajustar `top_k`, `temperatura`, `tokens de saída`.
-   - **Local (Qwen 1.5B)** — não exige chave; **parâmetros travados** por segurança.
+   - **Local (Qwen2.5 - 0.5B)** — não exige chave; **parâmetros travados** por segurança.
 
 2. **Escreva a pergunta** e clique **Perguntar**.
 
@@ -313,7 +313,7 @@ streamlit run streamlit_app.py
 ## Perguntas Frequentes (FAQ)
 
 **1) Por que minha resposta foi curta/incompleta no Local?**  
-O Qwen 1.5B tem **janela menor**. O backend aplica **truncamentos**. Tente encurtar a pergunta ou use o motor **OpenAI**.
+O Qwen 2.5 - 0.5B tem **janela menor**. O backend aplica **truncamentos**. Tente encurtar a pergunta ou use o motor **OpenAI**.
 
 **2) O que é `top_k`?**  
 É o número de **trechos** do seu índice enviados no **Contexto**. Mais trechos = mais fatos, mas também **mais tokens** e custo/latência (OpenAI).

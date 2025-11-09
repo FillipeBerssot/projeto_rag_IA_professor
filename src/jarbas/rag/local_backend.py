@@ -3,7 +3,7 @@ local_backend.py
 ================
 Pipeline RAG **100% local** usando:
 - Recuperação: SentenceTransformers + FAISS
-- Geração: Qwen2.5-1.5B-Instruct (transformers, text-generation)
+- Geração: Qwen2.5-0.5B-Instructt (transformers, text-generation)
 
 Notas:
 - Qwen é um modelo *causal* (não seq2seq). Usamos `apply_chat_template` para
@@ -46,13 +46,13 @@ PROMPT_USER_TEMPLATE = (
 # Caminhos/modelos
 INDEX_DIR = "data/index"
 EMB_MODEL = "sentence-transformers/all-MiniLM-L6-v2"
-GEN_MODEL = "Qwen/Qwen2.5-1.5B-Instruct"   # recomendado
+GEN_MODEL = "Qwen/Qwen2.5-0.5B-Instruct"   # recomendado
 
 # Orçamentos de tokens
-# Qwen 1.5B costuma ter máx. 2048
+# Qwen2.5 - 0.5B costuma ter máx. 2048
 MODEL_MAX_TOKENS = 2048
 MAX_INPUT_TOKENS = 1600          # pergunta + contexto + instruções do sistema
-MAX_NEW_TOKENS  = 384            # saída padrão
+MAX_NEW_TOKENS  = 240            # saída padrão
 MAX_QUESTION_TOKENS = 256        # limite da pergunta dentro da janela
 
 
@@ -72,7 +72,7 @@ class RAGTeacher:
     """
     Orquestrador RAG **local** (sem OpenAI):
     - Recuperação: embeddings com SentenceTransformers + FAISS.
-    - Geração: Qwen2.5-1.5B-Instruct via `transformers` (text-generation).
+    - Geração: Qwen2.5-0.5B-Instruct via `transformers` (text-generation).
     """
 
     def __init__(self, index_dir: str = INDEX_DIR, top_k: int = 5):

@@ -32,10 +32,10 @@ with st.sidebar:
 
     engine = st.selectbox(
         "Motor de geração",
-        ["OpenAI (gpt-4o-mini)", "Local (Qwen/Qwen2.5-1.5B-Instruct)"],
+        ["OpenAI (gpt-4o-mini)", "Local (Qwen/Qwen2.5-0.5B-Instruct)"],
         help = (
             "• OpenAI: janela maior, respostas mais completas, requer API key.\n"
-            "• Local (Qwen 1.5B): roda no seu hardware, sem chave; é mais limitado "
+            "• Local (Qwen2.5 - 0.5B): roda no seu hardware, sem chave; é mais limitado "
             "em contexto e saída."
         ) ,
     )
@@ -109,7 +109,7 @@ with st.sidebar:
 
         # Instruções extras do modo local
         st.info(
-            "🖥️ **Modo Local (Qwen 1.5B)**\n\n"
+            "🖥️ **Modo Local (Qwen2.5 - 0.5B)**\n\n"
             "- Ideal para testes sem API key.\n"
             "- Contexto curto (janela menor). Perguntas e respostas muito longas podem ser encurtadas.\n"
             "- Evite colar textos gigantes na pergunta.\n"
@@ -172,7 +172,7 @@ answer = None
 
 # Dicas específicas para o modo local (expander na área central)
 if not "engine" in locals() or not engine.startswith("OpenAI"):
-    with st.expander("💡 Dicas para o modo local (Qwen 1.5B)"):
+    with st.expander("💡 Dicas para o modo local (Qwen2.5 - 0.5B)"):
         st.markdown(
             """
 - Faça **perguntas objetivas e curtas** (1–3 frases).
