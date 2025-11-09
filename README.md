@@ -13,6 +13,8 @@ license: mit
 
 # Jarbas RAG (Projeto de Estudo Pessoal)
 
+---
+
 ## 🌐 Como usar online (Hugging Face Spaces)
 
 **Link público do app**  
