@@ -32,7 +32,7 @@ with st.sidebar:
 
     engine = st.selectbox(
         "Motor de geração",
-        ["OpenAI (gpt-4o-mini)", "Local (Qwen/Qwen2.5-0.5B-Instruct)"],
+        ["OpenAI (gpt-4o-mini)", "Local (Qwen2.5-0.5B-Instruct)"],
         help = (
             "• OpenAI: janela maior, respostas mais completas, requer API key.\n"
             "• Local (Qwen2.5 - 0.5B): roda no seu hardware, sem chave; é mais limitado "
