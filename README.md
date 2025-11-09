@@ -1,3 +1,16 @@
+---
+title: Jarbas RAG (Projeto de Estudo Pessoal)
+emoji: 🧑‍🏫
+colorFrom: blue
+colorTo: purple
+sdk: streamlit
+sdk_version: "1.51.0"
+app_file: streamlit_app.py
+pinned: false
+python_version: "3.10"
+license: mit
+---
+
 # Jarbas RAG (Projeto de Estudo Pessoal)
 
 > **Aviso**  
@@ -309,23 +322,3 @@ Modelos e pacotes externos seguem as **suas próprias licenças** (consulte os r
 
 Feito por **Fillipe Berssot** como **projeto de estudo**.  
 Ideias e ajustes de prompt/pipeline foram inspirados pela documentação das libs usadas e por boas práticas comuns em RAG.
-
----
-title: Projeto Rag IA Professor
-emoji: 🚀
-colorFrom: red
-colorTo: red
-sdk: docker
-app_port: 8501
-tags:
-- streamlit
-pinned: false
-short_description: Pipeline RAG para aprender na prática
----
-
-# Welcome to Streamlit!
-
-Edit `/src/streamlit_app.py` to customize this app to your heart's desire. :heart:
-
-If you have any questions, checkout our [documentation](https://docs.streamlit.io) and [community
-forums](https://discuss.streamlit.io).
