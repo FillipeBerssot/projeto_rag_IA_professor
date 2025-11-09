@@ -3,10 +3,10 @@ local_backend.py
 ================
 Pipeline RAG **100% local** usando:
 - Recuperação: SentenceTransformers + FAISS
-- Geração: TinyLlama/TinyLlama-1.1B-Chat-v1.0 (transformers, text-generation)
+- Geração: Qwen2.5-1.5B-Instruct (transformers, text-generation)
 
 Notas:
-- TinyLlama é um modelo *causal* (não seq2seq). Usamos `apply_chat_template` para
+- Qwen é um modelo *causal* (não seq2seq). Usamos `apply_chat_template` para
   montar o prompt no formato de chat.
 - A janela típica desta variante é ~2048 tokens. Este arquivo limita a
   entrada (pergunta + contexto) e a saída de forma segura.
@@ -24,16 +24,16 @@ from transformers import AutoTokenizer, pipeline
 # Prompt (curto e robusto para modelos pequenos)
 PROMPT_SYSTEM = (
     """
-    Você é Jarbas, um professor de programação (pt-BR) claro e didático.
-    Use SOMENTE o bloco CONTEXTO para fatos. Se algo não estiver no contexto,
-    diga que falta informação e sugira próximos passos. Não invente APIs ou resultados.
+    Você é Jarbas, um **professor de programação Python** (pt-BR) **direto e didático**. Sua prioridade é fornecer a informação correta e o exemplo de código **mais simples possível**.
 
-    ### Estrutura esperada da resposta
-    1) **Resumo simples**
-    2) **Passo a passo simples**
-    3) **1 exemplo mínimo**
-    4) **Dicas & Observações**
-    8) **Referências (do contexto)** – mantenha a lista fornecida ao final do output principal.
+    ---
+
+    **Instruções de Conteúdo e Formato:**
+    * Responda com um **resumo conciso**, seguido pelo **código de exemplo** e **explicações breves**.
+    * **Seja extremamente conciso e vá direto ao ponto.**
+    * Use SOMENTE o bloco CONTEXTO para fatos. Se algo não estiver no contexto, diga que a informação é insuficiente e pare a resposta.
+    * **Não invente** APIs, resultados ou fatos.
+    * Mantenha um tom encorajador e profissional.
     """
 )
 
@@ -46,12 +46,13 @@ PROMPT_USER_TEMPLATE = (
 # Caminhos/modelos
 INDEX_DIR = "data/index"
 EMB_MODEL = "sentence-transformers/all-MiniLM-L6-v2"
-GEN_MODEL = "TinyLlama/TinyLlama-1.1B-Chat-v1.0"   # recomendado
+GEN_MODEL = "Qwen/Qwen2.5-1.5B-Instruct"   # recomendado
 
 # Orçamentos de tokens
+# Qwen 1.5B costuma ter máx. 2048
 MODEL_MAX_TOKENS = 2048
 MAX_INPUT_TOKENS = 1600          # pergunta + contexto + instruções do sistema
-MAX_NEW_TOKENS  = 240            # saída padrão
+MAX_NEW_TOKENS  = 384            # saída padrão
 MAX_QUESTION_TOKENS = 256        # limite da pergunta dentro da janela
 
 
@@ -71,7 +72,7 @@ class RAGTeacher:
     """
     Orquestrador RAG **local** (sem OpenAI):
     - Recuperação: embeddings com SentenceTransformers + FAISS.
-    - Geração: TinyLlama-1.1B-Chat-v1.0 `transformers` (text-generation).
+    - Geração: Qwen2.5-1.5B-Instruct via `transformers` (text-generation).
     """
 
     def __init__(self, index_dir: str = INDEX_DIR, top_k: int = 5):
@@ -88,7 +89,7 @@ class RAGTeacher:
         emb_device = "cuda" if torch.cuda.is_available() else "cpu"
         self.emb = SentenceTransformer(EMB_MODEL, device=emb_device)
 
-        # Tokenizer + Gerador (TinyLlama)
+        # Tokenizer + Gerador (Qwen)
         # trust_remote_code costuma ser necessário para apply_chat_template de alguns modelos
         self.tokenizer = AutoTokenizer.from_pretrained(GEN_MODEL, trust_remote_code=True)
         self.generator = pipeline(
@@ -100,7 +101,7 @@ class RAGTeacher:
             trust_remote_code=True,
         )
 
-        # EOS id (para TinyLlama)
+        # EOS id (para Qwen)
         self.eos_token_id = getattr(self.tokenizer, "eos_token_id", None)
         if self.tokenizer.pad_token_id is None and self.eos_token_id is not None:
             self.tokenizer.pad_token_id = self.eos_token_id
