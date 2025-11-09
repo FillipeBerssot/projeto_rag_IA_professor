@@ -3,10 +3,10 @@ local_backend.py
 ================
 Pipeline RAG **100% local** usando:
 - Recuperação: SentenceTransformers + FAISS
-- Geração: Qwen2.5-0.5B-Instructt (transformers, text-generation)
+- Geração: TinyLlama/TinyLlama-1.1B-Chat-v1.0 (transformers, text-generation)
 
 Notas:
-- Qwen é um modelo *causal* (não seq2seq). Usamos `apply_chat_template` para
+- TinyLlama é um modelo *causal* (não seq2seq). Usamos `apply_chat_template` para
   montar o prompt no formato de chat.
 - A janela típica desta variante é ~2048 tokens. Este arquivo limita a
   entrada (pergunta + contexto) e a saída de forma segura.
@@ -46,10 +46,9 @@ PROMPT_USER_TEMPLATE = (
 # Caminhos/modelos
 INDEX_DIR = "data/index"
 EMB_MODEL = "sentence-transformers/all-MiniLM-L6-v2"
-GEN_MODEL = "Qwen/Qwen2.5-0.5B-Instruct"   # recomendado
+GEN_MODEL = "TinyLlama/TinyLlama-1.1B-Chat-v1.0"   # recomendado
 
 # Orçamentos de tokens
-# Qwen2.5 - 0.5B costuma ter máx. 2048
 MODEL_MAX_TOKENS = 2048
 MAX_INPUT_TOKENS = 1600          # pergunta + contexto + instruções do sistema
 MAX_NEW_TOKENS  = 240            # saída padrão
@@ -72,7 +71,7 @@ class RAGTeacher:
     """
     Orquestrador RAG **local** (sem OpenAI):
     - Recuperação: embeddings com SentenceTransformers + FAISS.
-    - Geração: Qwen2.5-0.5B-Instruct via `transformers` (text-generation).
+    - Geração: TinyLlama-1.1B-Chat-v1.0 `transformers` (text-generation).
     """
 
     def __init__(self, index_dir: str = INDEX_DIR, top_k: int = 5):
@@ -89,7 +88,7 @@ class RAGTeacher:
         emb_device = "cuda" if torch.cuda.is_available() else "cpu"
         self.emb = SentenceTransformer(EMB_MODEL, device=emb_device)
 
-        # Tokenizer + Gerador (Qwen)
+        # Tokenizer + Gerador (TinyLlama)
         # trust_remote_code costuma ser necessário para apply_chat_template de alguns modelos
         self.tokenizer = AutoTokenizer.from_pretrained(GEN_MODEL, trust_remote_code=True)
         self.generator = pipeline(
@@ -101,7 +100,7 @@ class RAGTeacher:
             trust_remote_code=True,
         )
 
-        # EOS id (para Qwen)
+        # EOS id (para TinyLlama)
         self.eos_token_id = getattr(self.tokenizer, "eos_token_id", None)
         if self.tokenizer.pad_token_id is None and self.eos_token_id is not None:
             self.tokenizer.pad_token_id = self.eos_token_id

@@ -32,12 +32,12 @@ with st.sidebar:
 
     engine = st.selectbox(
         "Motor de geração",
-        ["OpenAI (gpt-4o-mini)", "Local (Qwen2.5-0.5B-Instruct)"],
+        ["OpenAI (gpt-4o-mini)", "Local (TinyLlama-1.1B-Chat-v1.0)"],
         help = (
             "• OpenAI: janela maior, respostas mais completas, requer API key.\n"
-            "• Local (Qwen2.5 - 0.5B): roda no seu hardware, sem chave; é mais limitado "
+            "• Local (TinyLlama-1.1B-Chat-v1.0): (modelo básico) roda no seu hardware, sem chave; é mais limitado "
             "em contexto e saída."
-        ) ,
+        )
     )
 
     # OPENAI: mostrar campos editáveis
@@ -109,11 +109,11 @@ with st.sidebar:
 
         # Instruções extras do modo local
         st.info(
-            "🖥️ **Modo Local (Qwen2.5 - 0.5B)**\n\n"
+            "🖥️ **Modo Local (TinyLlama-1.1B-Chat-v1.0)**\n\n"
             "- Ideal para testes sem API key.\n"
             "- Contexto curto (janela menor). Perguntas e respostas muito longas podem ser encurtadas.\n"
             "- Evite colar textos gigantes na pergunta.\n"
-            "- Se precisar de respostas mais extensas, selecione o motor **OpenAI**."
+            "- Se precisar de respostas melhores e mais extensas, selecione o motor **OpenAI**."
         )
 
 # detectar mudança de motor e limpar recursos pesados
@@ -172,7 +172,7 @@ answer = None
 
 # Dicas específicas para o modo local (expander na área central)
 if not "engine" in locals() or not engine.startswith("OpenAI"):
-    with st.expander("💡 Dicas para o modo local (Qwen2.5 - 0.5B)"):
+    with st.expander("💡 Dicas para o modo local (TinyLlama-1.1B-Chat-v1.0)"):
         st.markdown(
             """
 - Faça **perguntas objetivas e curtas** (1–3 frases).
