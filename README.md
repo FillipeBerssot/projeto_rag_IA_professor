@@ -13,6 +13,18 @@ license: mit
 
 # Jarbas RAG (Projeto de Estudo Pessoal)
 
+## 🌐 Como usar online (Hugging Face Spaces)
+
+**Link público do app**  
+➡️ **https://huggingface.co/spaces/FillipeBerssot/projeto_rag_IA_professor**
+
+### O que esperar ao abrir
+- **Cold start (primeiro acesso)**: o Space “acorda” e carrega dependências/índice — pode levar alguns segundos/minutos.
+- **Hibernação por inatividade**: se ficar um tempo sem uso, o Space “dorme”. Ao acessar de novo, ele **acorda automaticamente**.
+- **Primeira pergunta mais lenta**: a primeira execução aquece cache/modelos; as próximas tendem a ser mais rápidas.
+
+---
+
 > **Aviso**  
 > Este repositório é um **projeto de estudo** feito para praticar RAG (Retrieval-Augmented Generation), Python e Streamlit.  
 > **Não** é um produto, não tem garantias de estabilidade e **pode falhar** (por exemplo, com mensagens como `Killed` em máquinas com pouca memória).  
