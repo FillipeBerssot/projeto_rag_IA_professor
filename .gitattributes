@@ -1,3 +1,4 @@
+data/index/* filter=lfs diff=lfs merge=lfs -text
 data/index/faiss.index filter=lfs diff=lfs merge=lfs -text
 data/index/texts.json filter=lfs diff=lfs merge=lfs -text
 data/index/metas.json filter=lfs diff=lfs merge=lfs -text
